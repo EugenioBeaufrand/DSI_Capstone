@@ -20,13 +20,6 @@ When you click the **Knit** button a document will be generated that includes bo
 library('rtweet')
 library('dplyr')
 
-token <- create_token(
-
-  consumer_key = "cMsTvf7tfkDrPPu5nx8ksSDEV",
-  consumer_secret = "3pIfFdjbqux2lfdOtOAyGbRHf0ObT3EHSIxDTSYBJWVymKPkk0",
-  access_token = "1455822180927868935-lNIew1zN6wDCA0jz1LoD7owgIBAF74",
-  access_secret = "ZCjCPkRKkolpqSCBkaAvNsOMu67v1qvSQaPYOnf9KXcrH")
-
 eng3 <- get_followers("CUgradSEAS",n=2000)
 user_follower3 <- get_followers(eng3[['user_id']][551])
 user_follower3 <- user_follower3 %>% summarise(user_id = paste(user_id, collapse=","))

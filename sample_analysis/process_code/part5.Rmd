@@ -3,13 +3,6 @@
 library('rtweet')
 library('dplyr')
 
-token <- create_token(
-
-  consumer_key = "ZT9t848MV4DsX4aqMf3vTUhcf",
-  consumer_secret = "3jnJpcy0TiovDOBw8CJYnAvLf5PYhw0or06Dm8VYNedzGmgo1W",
-  access_token = "1455822180927868935-6Po6CCMEYN8wE4C5wMIpVKHIaMtuVn",
-  access_secret = "uxyhhuV4N1K38J3cis5c5mKUpNQkEOPXIAlwblQmrhkkP")
-
 #eng5 <- get_followers("CUgradSEAS",n=2000)
 user_follower8 <- get_followers(eng5[['user_id']][1393])
 user_follower8 <- user_follower8 %>% summarise(user_id = paste(user_id, collapse=","))
