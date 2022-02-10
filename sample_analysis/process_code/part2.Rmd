@@ -1,0 +1,31 @@
+```{r}
+library('rtweet')
+library('dplyr')
+
+token <- create_token(
+
+  consumer_key = "st4wyov0LtIV70GSCvr6zZvlO",
+  consumer_secret = "DZ0Woq8v66fbAvrykHTPtkpgky7D6lKfZy3X4FknfhEiCIiTrr",
+  access_token = "1455822180927868935-HgPV2suzzvyzTFK9cRJRHtw1Er6B7N",
+  access_secret = "rRhdF1woQdz6hKlbM3pdNfX3K6kxtSiRoq2NQvo4l8dFj")
+
+#eng <- get_followers("CUgradSEAS",n=2000)
+user_follower6 <- get_followers(eng[['user_id']][971])
+user_follower6 <- user_follower6 %>% summarise(user_id = paste(user_id, collapse=","))
+user_follower6$user <- eng[['user_id']][971]
+for (i in 972:1181) {
+  temp <- get_followers(eng[['user_id']][i])
+  temp <- temp %>% summarise(user_id = paste(user_id, collapse=","))
+  temp$user <- eng[['user_id']][i]
+  user_follower6 <- rbind(user_follower6,temp)
+  print(i)
+  if (i%% 14 == 0) {
+    print(i)
+    Sys.sleep(910)
+}
+}
+names(user_follower6)[1] <- 'follower'
+write.csv(user_follower6,"/Users/tracy/Desktop/columbia/DSI_Capstone/user_follower6.csv", row.names = FALSE)
+
+```
+

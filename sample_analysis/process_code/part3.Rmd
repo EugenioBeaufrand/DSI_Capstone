@@ -1,0 +1,58 @@
+---
+title: "part3"
+author: "TracyLiu"
+date: "2022/2/8"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+# invalid
+library('rtweet')
+library('dplyr')
+
+token <- create_token(
+
+  consumer_key = "cMsTvf7tfkDrPPu5nx8ksSDEV",
+  consumer_secret = "3pIfFdjbqux2lfdOtOAyGbRHf0ObT3EHSIxDTSYBJWVymKPkk0",
+  access_token = "1455822180927868935-lNIew1zN6wDCA0jz1LoD7owgIBAF74",
+  access_secret = "ZCjCPkRKkolpqSCBkaAvNsOMu67v1qvSQaPYOnf9KXcrH")
+
+eng3 <- get_followers("CUgradSEAS",n=2000)
+user_follower3 <- get_followers(eng3[['user_id']][551])
+user_follower3 <- user_follower3 %>% summarise(user_id = paste(user_id, collapse=","))
+user_follower3$user <- eng3[['user_id']][551]
+for (i in 552:690) {
+  temp <- get_followers(eng3[['user_id']][i])
+  temp <- temp %>% summarise(user_id = paste(user_id, collapse=","))
+  temp$user <- eng3[['user_id']][i]
+  user_follower3 <- rbind(user_follower3,temp)
+  print(i)
+  if (i%% 14 == 0) {
+    print(i)
+    Sys.sleep(910)
+}
+}
+names(user_follower3)[1] <- 'follower'
+write.csv(user_follower3,"/Users/tracy/Desktop/columbia/DSI_Capstone/user_follower3.csv", row.names = FALSE)
+
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

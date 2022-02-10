@@ -1,0 +1,70 @@
+# get tweets
+
+```{r pressure, echo=FALSE}
+library('rtweet')
+eng <- get_followers("CUgradSEAS",n=2000)
+eng_follower_tweets_test <- get_timeline(user =eng[['user_id']][0:2],n=100,lang='en')
+
+for (i in 3:1602) {
+  temp <- get_timeline(user =  eng[['user_id']][i],n=100,lang='en')
+  eng_follower_tweets_test <- rbind(eng_follower_tweets_test,temp)
+  print(i)
+  if (i%% 175 == 0) {
+    Sys.sleep(950)
+    print('waiting')
+}
+}
+temp <- get_timeline(user =  eng[['user_id']][1578:1602],n=100,lang='en')
+eng_follower_tweets_test <- rbind(eng_follower_tweets_test,temp)
+```
+
+
+
+```{r pressure, echo=FALSE}
+eng_follower_tweets_test <- eng_follower_tweets_test %>% mutate(hashtags = map_chr(hashtags, stringr::str_c, collapse = ','))
+eng_follower_tweets_test <- eng_follower_tweets_test %>% mutate(symbols = map_chr(symbols, stringr::str_c, collapse = ','))
+eng_follower_tweets_test <- eng_follower_tweets_test %>% mutate(urls_url = map_chr(urls_url, stringr::str_c, collapse = ','))
+eng_follower_tweets_test <- eng_follower_tweets_test %>% mutate(`urls_t.co` = map_chr(`urls_t.co`, stringr::str_c, collapse = ','))
+eng_follower_tweets_test <- eng_follower_tweets_test %>% mutate(urls_expanded_url = map_chr(urls_expanded_url, stringr::str_c, collapse = ','))
+eng_follower_tweets_test <- eng_follower_tweets_test %>% mutate(media_url = map_chr(media_url, stringr::str_c, collapse = ','))
+eng_follower_tweets_test <- eng_follower_tweets_test %>% mutate(`media_t.co` = map_chr(`media_t.co`, stringr::str_c, collapse = ','))
+eng_follower_tweets_test <- eng_follower_tweets_test %>% mutate(media_expanded_url = map_chr(media_expanded_url, stringr::str_c, collapse = ','))
+eng_follower_tweets_test <- eng_follower_tweets_test %>% mutate(media_type = map_chr(media_type, stringr::str_c, collapse = ','))
+eng_follower_tweets_test <- eng_follower_tweets_test %>% mutate(ext_media_url = map_chr(ext_media_url, stringr::str_c, collapse = ','))
+eng_follower_tweets_test <- eng_follower_tweets_test %>% mutate(`ext_media_t.co` = map_chr(`ext_media_t.co`, stringr::str_c, collapse = ','))
+eng_follower_tweets_test <- eng_follower_tweets_test %>% mutate(ext_media_expanded_url = map_chr(ext_media_expanded_url, stringr::str_c, collapse = ','))
+eng_follower_tweets_test <- eng_follower_tweets_test %>% mutate(mentions_user_id = map_chr(mentions_user_id, stringr::str_c, collapse = ','))
+eng_follower_tweets_test <- eng_follower_tweets_test %>% mutate(mentions_screen_name = map_chr(mentions_screen_name, stringr::str_c, collapse = ','))
+eng_follower_tweets_test <- eng_follower_tweets_test %>% mutate(geo_coords = map_chr(geo_coords, stringr::str_c, collapse = ','))
+eng_follower_tweets_test <- eng_follower_tweets_test %>% mutate(coords_coords = map_chr(coords_coords, stringr::str_c, collapse = ','))
+eng_follower_tweets_test <- eng_follower_tweets_test %>% mutate(bbox_coords = map_chr(bbox_coords, stringr::str_c, collapse = ','))
+
+write.csv(eng_follower_tweets_test,"/Users/tracy/Desktop/columbia/eng_follower_tweets_test.csv", row.names = FALSE)
+```
+
+# get followers
+
+```{r, echo=FALSE}
+write.csv(eng,"/Users/tracy/Desktop/columbia/DSI_Capstone/eng_followers.csv", row.names = FALSE)
+```
+
+```{r , echo=FALSE}
+user_follower3 <- get_followers(eng[['user_id']][551])
+user_follower3 <- user_follower3 %>% summarise(user_id = paste(user_id, collapse=","))
+user_follower3$user <- eng[['user_id']][551]
+for (i in 552:690) {
+  temp <- get_followers(eng[['user_id']][i])
+  temp <- temp %>% summarise(user_id = paste(user_id, collapse=","))
+  temp$user <- eng[['user_id']][i]
+  user_follower3 <- rbind(user_follower3,temp)
+  print(i)
+  if (i%% 14 == 0) {
+    print(i)
+    Sys.sleep(910)
+}
+}
+names(user_follower3)[1] <- 'follower'
+write.csv(user_follower3,"/Users/tracy/Desktop/columbia/DSI_Capstone/user_follower3.csv", row.names = FALSE)
+```
+
+
